@@ -95,19 +95,12 @@ const App: React.FC = () => {
   };
 
   const handleResetWorkspace = () => {
-    // 1. Clear state immediately to refresh UI
     setTasks([]);
     setNotes([]);
-    
-    // 2. Clear specific Local Storage keys
     localStorage.removeItem('nexus_tasks');
     localStorage.removeItem('nexus_notes');
-    
-    // 3. Reset confirmation UI and go home
     setIsConfirmingReset(false);
     setCurrentView('dashboard');
-    
-    console.log("Workspace cleared successfully.");
   };
 
   const renderView = () => {
@@ -204,6 +197,14 @@ const App: React.FC = () => {
           <NavItem active={currentView === 'notes'} onClick={() => { setCurrentView('notes'); setIsConfirmingReset(false); }} icon={<Icons.Notes />} label="Notes" />
           <NavItem active={currentView === 'settings'} onClick={() => { setCurrentView('settings'); setIsConfirmingReset(false); }} icon={<Icons.Settings />} label="Settings" />
         </nav>
+
+        {/* Stylish Designer Credit Section */}
+        <div className="p-6 mt-auto border-t border-[#262626]/50 bg-gradient-to-t from-[#0d0d0d] to-transparent">
+          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-600 mb-1 font-bold">Crafted with precision</p>
+          <p className="text-xs font-medium text-blue-400/80 italic">
+            designed by: <span className="font-bold not-italic text-blue-500 transition-all hover:text-blue-400 cursor-default">Sachin Adi</span>
+          </p>
+        </div>
       </aside>
 
       {/* Main Content */}
