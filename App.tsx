@@ -202,11 +202,8 @@ const App: React.FC = () => {
           <NavItem active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setIsConfirmingReset(false); }} icon={<Icons.Dashboard />} label="Dashboard" />
           <NavItem active={currentView === 'tasks'} onClick={() => { setCurrentView('tasks'); setIsConfirmingReset(false); }} icon={<Icons.Tasks />} label="Tasks" />
           <NavItem active={currentView === 'notes'} onClick={() => { setCurrentView('notes'); setIsConfirmingReset(false); }} icon={<Icons.Notes />} label="Notes" />
+          <NavItem active={currentView === 'settings'} onClick={() => { setCurrentView('settings'); setIsConfirmingReset(false); }} icon={<Icons.Settings />} label="Settings" />
         </nav>
-
-        <div className="p-4 border-t border-[#262626]">
-          <NavItem active={currentView === 'settings'} onClick={() => setCurrentView('settings')} icon={<Icons.Settings />} label="Settings" />
-        </div>
       </aside>
 
       {/* Main Content */}
