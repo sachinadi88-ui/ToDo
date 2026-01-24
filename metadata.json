@@ -1,0 +1,5 @@
+{
+  "name": "Task Manager Personal Workspace",
+  "description": "A high-performance, local-first productivity dashboard featuring task management, note-taking, and data visualization, built entirely without external AI services.",
+  "requestFramePermissions": []
+}
