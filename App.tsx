@@ -191,20 +191,25 @@ const App: React.FC = () => {
           </div>
         </div>
 
-        <nav className="flex-1 px-4 space-y-1 mt-4">
+        <nav className="px-4 space-y-1 mt-4">
           <NavItem active={currentView === 'dashboard'} onClick={() => { setCurrentView('dashboard'); setIsConfirmingReset(false); }} icon={<Icons.Dashboard />} label="Dashboard" />
           <NavItem active={currentView === 'tasks'} onClick={() => { setCurrentView('tasks'); setIsConfirmingReset(false); }} icon={<Icons.Tasks />} label="Tasks" />
           <NavItem active={currentView === 'notes'} onClick={() => { setCurrentView('notes'); setIsConfirmingReset(false); }} icon={<Icons.Notes />} label="Notes" />
           <NavItem active={currentView === 'settings'} onClick={() => { setCurrentView('settings'); setIsConfirmingReset(false); }} icon={<Icons.Settings />} label="Settings" />
+          
+          {/* Stylish Designer Credit Section placed directly after settings */}
+          <div className="pt-8 pb-4 px-3 pointer-events-none select-none animate-fadeIn">
+            <div className="h-px w-8 bg-gradient-to-r from-gray-800 to-transparent mb-4" />
+            <p className="text-[10px] uppercase tracking-[0.25em] text-gray-700 font-bold mb-1.5">
+              Crafted with care
+            </p>
+            <p className="text-[11px] font-medium italic text-gray-500">
+              designed by: <span className="not-italic font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Sachin Adi</span>
+            </p>
+          </div>
         </nav>
 
-        {/* Stylish Designer Credit Section */}
-        <div className="p-6 mt-auto border-t border-[#262626]/50 bg-gradient-to-t from-[#0d0d0d] to-transparent">
-          <p className="text-[10px] uppercase tracking-[0.2em] text-gray-600 mb-1 font-bold">Crafted with precision</p>
-          <p className="text-xs font-medium text-blue-400/80 italic">
-            designed by: <span className="font-bold not-italic text-blue-500 transition-all hover:text-blue-400 cursor-default">Sachin Adi</span>
-          </p>
-        </div>
+        <div className="flex-1" />
       </aside>
 
       {/* Main Content */}
