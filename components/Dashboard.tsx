@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Task, Note, TaskStatus, TaskPriority } from '../types';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
+// Added Note to the import list to fix "Cannot find name 'Note'" error on line 8
+import { Task, TaskStatus, TaskPriority, Note } from '../types';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 
 interface DashboardProps {
   tasks: Task[];
@@ -10,19 +11,13 @@ interface DashboardProps {
 
 const Dashboard: React.FC<DashboardProps> = ({ tasks, notes }) => {
   const completedTasks = tasks.filter(t => t.status === TaskStatus.DONE).length;
-  const pendingTasks = tasks.filter(t => t.status !== TaskStatus.DONE).length;
+  const pendingTasks = tasks.filter(t => t.status !== TaskStatus.DONE);
   const highPriorityTasks = tasks.filter(t => t.priority === TaskPriority.HIGH && t.status !== TaskStatus.DONE).length;
 
   const chartData = [
     { name: 'Todo', value: tasks.filter(t => t.status === TaskStatus.TODO).length, color: '#6366f1' },
     { name: 'Active', value: tasks.filter(t => t.status === TaskStatus.IN_PROGRESS).length, color: '#f59e0b' },
     { name: 'Done', value: completedTasks, color: '#10b981' },
-  ];
-
-  const priorityData = [
-    { name: 'High', value: tasks.filter(t => t.priority === TaskPriority.HIGH).length, color: '#ef4444' },
-    { name: 'Medium', value: tasks.filter(t => t.priority === TaskPriority.MEDIUM).length, color: '#f59e0b' },
-    { name: 'Low', value: tasks.filter(t => t.priority === TaskPriority.LOW).length, color: '#3b82f6' },
   ];
 
   return (
@@ -34,12 +29,12 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, notes }) => {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8 md:mb-10">
-        <StatCard title="Active Tasks" value={pendingTasks} subtitle={`${highPriorityTasks} high priority`} color="text-blue-500" />
+        <StatCard title="Active Tasks" value={pendingTasks.length} subtitle={`${highPriorityTasks} high priority`} color="text-blue-500" />
         <StatCard title="Completed" value={completedTasks} subtitle="Successfully finished" color="text-green-500" />
         <StatCard title="Total Notes" value={notes.length} subtitle="Thought repository" color="text-purple-500" />
       </div>
 
-      {/* Visualizations */}
+      {/* Visualizations & Lists */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-8 mb-8 md:mb-10">
         <div className="bg-[#171717] p-5 md:p-6 rounded-2xl border border-[#262626]">
           <h3 className="text-lg font-semibold mb-6 text-gray-200">Task Status</h3>
@@ -64,28 +59,30 @@ const Dashboard: React.FC<DashboardProps> = ({ tasks, notes }) => {
           </div>
         </div>
 
-        <div className="bg-[#171717] p-5 md:p-6 rounded-2xl border border-[#262626]">
-          <h3 className="text-lg font-semibold mb-6 text-gray-200">Priority Levels</h3>
-          <div className="h-64 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={priorityData}
-                  innerRadius={60}
-                  outerRadius={80}
-                  paddingAngle={5}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {priorityData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.color} />
-                  ))}
-                </Pie>
-                <Tooltip 
-                   contentStyle={{ backgroundColor: '#171717', border: '1px solid #262626', borderRadius: '8px', fontSize: '12px' }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+        <div className="bg-[#171717] p-5 md:p-6 rounded-2xl border border-[#262626] flex flex-col h-full">
+          <h3 className="text-lg font-semibold mb-6 text-gray-200">Tasks to be Done</h3>
+          <div className="flex-1 overflow-y-auto max-h-64 custom-scrollbar pr-2 space-y-3">
+            {pendingTasks.length > 0 ? (
+              pendingTasks.sort((a, b) => {
+                const pMap = { [TaskPriority.HIGH]: 0, [TaskPriority.MEDIUM]: 1, [TaskPriority.LOW]: 2 };
+                return pMap[a.priority] - pMap[b.priority];
+              }).map(task => (
+                <div key={task.id} className="flex items-center justify-between p-3 rounded-xl bg-[#262626]/30 border border-[#262626] hover:bg-[#262626]/50 transition-colors">
+                  <span className="text-sm text-gray-100 font-medium line-clamp-1">{task.title}</span>
+                  <span className={`text-[9px] font-black uppercase tracking-widest px-2 py-1 rounded-lg ml-3 flex-shrink-0 ${
+                    task.priority === TaskPriority.HIGH ? 'bg-red-500/10 text-red-500' :
+                    task.priority === TaskPriority.MEDIUM ? 'bg-amber-500/10 text-amber-500' :
+                    'bg-blue-500/10 text-blue-500'
+                  }`}>
+                    {task.priority}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <div className="h-full flex flex-col items-center justify-center text-gray-500 py-10">
+                <p className="italic text-sm">All caught up!</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
